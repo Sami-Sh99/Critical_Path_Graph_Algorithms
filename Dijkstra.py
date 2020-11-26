@@ -36,8 +36,7 @@ def dijkstra(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 'Li
     
     dist[start] = 0  # dist from start -> start is zero
     pq.put((dist[start], start))
-    adj=dict(graph.adjacency())
-    start_time = time.time()
+    adj=graph.adj
     while 0 != pq.qsize():
         curr_cost, curr = pq.get()
         visited.add(curr)
@@ -52,9 +51,8 @@ def dijkstra(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 'Li
                 prev[neighbor] = curr
                 # insert into priority queue and mark as visited
                 visited.add(neighbor)
-                pq.put((dist[neighbor],neighbor))
-    elapsed_time = time.time() - start_time                
-    return elapsed_time, backtrace(prev, start, end), dist
+                pq.put((dist[neighbor],neighbor))              
+    return backtrace(prev, start, end), dist
 
 def backPropagate(graph: 'networkx.classes.graph.DiGraph', start: str, end: str,init: int) -> 'List':
 

@@ -27,9 +27,9 @@ for fname in fnames:
 
     print("Applying Modified Dijkstra Algorithm for %s"%fname)
     start_time = time.time()
-    shortest_path_D=dijkstra(G,0,len(G.nodes())-1)[0]
+    shortest_path_D=dijkstra(G,0,len(G.nodes())-1)
     elapsed_time = time.time() - start_time
-    D_V[parse_file(fname)]=float(shortest_path_D)
+    D_V[parse_file(fname)]=float(elapsed_time)
 
     print("Applying Topological Sort Algorithm for %s"%fname)
     start_time = time.time()
@@ -42,17 +42,6 @@ for fname in fnames:
     shortest_path_B=bellman_ford(G,0,len(G.nodes())-1)
     elapsed_time = time.time() - start_time
     B_V[parse_file(fname)]=float(elapsed_time)
-
-    # print("Applying Modified Bellman Ford Algorithm for %s"%fname)
-    # start_time = time.time()
-    # shortest_path=nx.bellman_ford_path(G_neg,0,len(G.nodes())-1)
-    # elapsed_time = time.time() - start_time
-    # MB_V[parse_file(fname)]=float(elapsed_time)
-    # print("Applying Modified Bellman Ford Algorithm for %s"%fname)
-    # start_time = time.time()
-    # shortest_path_MB=nx.bellman_ford_path(G_neg,0,len(G.nodes())-1)
-    # elapsed_time = time.time() - start_time
-    # MB_V[parse_file(fname)]=float(elapsed_time)
 
     print("D:",shortest_path_D)
     print("T:",shortest_path_T)

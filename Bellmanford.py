@@ -6,9 +6,9 @@ def initialize(graph, source):
     d = {} # Stands for destination
     p = {} # Stands for predecessor
     for node in graph:
-        d[node] = -1#float('Inf') # We start admitting that the rest of nodes are very very far
+        d[node] = -1    #float('Inf') # We start admitting that the rest of nodes are very very far
         p[node] = None
-    d[source] = 0 # For the source we know how to reach
+    d[source] = 0       # For the source we know how to reach
     return d, p
 
 def relax(node, neighbour, graph, d, p):
@@ -38,7 +38,7 @@ def bellman_ford(G, source,target,pred=None, paths=None, dist=None):
     if dist is None:
         dist = {source:0}
 
-    G_succ = G.succ if G.is_directed() else G.adj
+    G_succ = dict(G.adjacency())
     inf = float(0)
     n = len(G)
 
@@ -48,11 +48,10 @@ def bellman_ford(G, source,target,pred=None, paths=None, dist=None):
     while q:
         u = q.popleft()
         in_q.remove(u)
-
         # Skip relaxations if any of the predecessors of u is in the queue.
         if all(pred_u not in in_q for pred_u in pred[u]):
             dist_u = dist[u]
-            for v, e in G_succ[u].items():
+            for v, e in dict(G.adjacency())[u].items():
                 dist_v = dist_u + G_succ[u][v]['weight']
 
                 if dist_v > dist.get(v, inf):
