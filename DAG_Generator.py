@@ -7,8 +7,10 @@ import json
 import random
 from random import randrange
 
-nb_of_nodes=15
-edge_prob=0.2
+nb_of_generated_graphs=30
+min_nb_of_nodes=100
+nb_of_nodes=500
+edge_prob=0.1
 max_weight=10
 min_weight=1
 
@@ -72,7 +74,7 @@ def get_reversed_edge(cycle):
     return None,None
 
 if __name__ == '__main__':
-    for n in random.sample(range(10,nb_of_nodes), 4):
+    for n in random.sample(range(min_nb_of_nodes,nb_of_nodes), nb_of_generated_graphs):
         G=generate_random_dag(n, edge_prob)
         save(G,"data/DAG_%d.json" % n)
     # G=load("sout.json")

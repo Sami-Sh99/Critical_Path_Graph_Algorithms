@@ -205,7 +205,7 @@ def dijkstraFib(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 
 
     n=len(graph.nodes())
     visited = [False]*n
-    distance = [0]*n
+    distance = [float('inf')]*n
     heapNodes = [None]*n
 
     heap = FibonacciHeap()
@@ -213,13 +213,11 @@ def dijkstraFib(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 
     for i in range(0, n):
         heapNodes[i] = heap.insert(float('inf'), i) 
     prev = {} 
+    distance[start] = 0
     heap.decrease_key(heapNodes[start], 0)
     
     while heap.total_nodes:
-        try:
-            current = heap.extract_min().value
-        except:
-            break
+        current = heap.extract_min().value
         visited[current] = True
  
         if end and current == end:
@@ -239,5 +237,5 @@ if __name__ == "__main__":
     fnames=os.listdir('data')
     G = load('data/%s'%fnames[0],True)
     print("Applying Dojkstra Algorithm")
-    print(dijkstraFib(G,0,len(G.nodes())-1 ))
+    print(dijkstraFib(G,0,len(G.nodes())-1 )[0])
     

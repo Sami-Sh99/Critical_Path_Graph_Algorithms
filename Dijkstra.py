@@ -53,8 +53,6 @@ def dijkstra(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 'Li
                 pq.put((dist[neighbor],neighbor))
     return backtrace(prev, start, end), dist
 
-
-
 def backPropagate(graph: 'networkx.classes.graph.DiGraph', start: str, end: str,init: int) -> 'List':
 
     rev=graph.reverse()
@@ -190,11 +188,10 @@ def _dijkstra_multisource(G, sources, weight, pred=None, paths=None,
 
 if __name__ == "__main__":
     fnames=os.listdir('data')
-    G = load('data/%s'%fnames[0])
-    Gi = load('data/%s'%fnames[0],True)
+    G = load('data/%s'%fnames[-1])
+    Gi = load('data/%s'%fnames[-1],True)
     print("Applying Dojkstra Algorithm")
-    print(dijkstra(G,0,len(G.nodes())-1 )[0])
-    print(nx.dijkstra_path(Gi,0,len(G.nodes())-1 ))
-    print(nx.dag_longest_path(G))
-    # print("sum",list(nx.all_simple_paths(G, 0, len(G.nodes())-1)))
+    print(dijkstra(G,0,len(G.nodes())-1 )[0])       #Heap Dijkstra
+    print(nx.dag_longest_path(G))                   #Topological Sort
+    print(nx.bellman_ford_path(Gi,0,len(G.nodes())-1))  #ModifiedBellman
                     
