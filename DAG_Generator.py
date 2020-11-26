@@ -7,10 +7,10 @@ import json
 import random
 from random import randrange
 
-nb_of_generated_graphs=30
-min_nb_of_nodes=100
-nb_of_nodes=500
-edge_prob=0.1
+nb_of_generated_graphs=1
+min_nb_of_nodes=14
+nb_of_nodes=16
+edge_prob=0.3
 max_weight=10
 min_weight=1
 
