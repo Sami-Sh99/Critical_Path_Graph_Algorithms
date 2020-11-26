@@ -3,6 +3,7 @@ from queue import PriorityQueue
 from heapq import heappush, heappop
 from itertools import count
 from math import inf
+import time
 import os
 from DAG_Generator import load
 # graph dependency  
@@ -35,12 +36,13 @@ def dijkstra(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 'Li
     
     dist[start] = 0  # dist from start -> start is zero
     pq.put((dist[start], start))
-    
+    adj=dict(graph.adjacency())
+    start_time = time.time()
     while 0 != pq.qsize():
         curr_cost, curr = pq.get()
         visited.add(curr)
         # look at curr's adjacent nodes
-        for neighbor in dict(graph.adjacency()).get(curr):
+        for neighbor in adj.get(curr):
             # if we found a shorter path 
             path = dist[curr] + cost(curr, neighbor)
             if path > dist[neighbor] or dist[neighbor]==inf:
@@ -51,7 +53,8 @@ def dijkstra(graph: 'networkx.classes.graph.Graph', start: str, end: str) -> 'Li
                 # insert into priority queue and mark as visited
                 visited.add(neighbor)
                 pq.put((dist[neighbor],neighbor))
-    return backtrace(prev, start, end), dist
+    elapsed_time = time.time() - start_time                
+    return elapsed_time, backtrace(prev, start, end), dist
 
 def backPropagate(graph: 'networkx.classes.graph.DiGraph', start: str, end: str,init: int) -> 'List':
 
@@ -188,10 +191,10 @@ def _dijkstra_multisource(G, sources, weight, pred=None, paths=None,
 
 if __name__ == "__main__":
     fnames=os.listdir('data')
-    G = load('data/%s'%fnames[-1])
-    Gi = load('data/%s'%fnames[-1],True)
+    G = load('data/%s'%fnames[0])
+    Gi = load('data/%s'%fnames[0],True)
     print("Applying Dojkstra Algorithm")
-    print(dijkstra(G,0,len(G.nodes())-1 )[0])       #Heap Dijkstra
+    print(dijkstra(G,0,len(G.nodes())-1 ))       #Heap Dijkstra
     print(nx.dag_longest_path(G))                   #Topological Sort
     print(nx.bellman_ford_path(Gi,0,len(G.nodes())-1))  #ModifiedBellman
                     

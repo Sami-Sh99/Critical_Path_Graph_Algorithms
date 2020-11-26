@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 from Dijkstra import dijkstra,backPropagate
-
+from DAG_Generator import load
+import os
 
 def is_sublist(x,y):
     try:
@@ -50,11 +51,16 @@ node_colors = ["g" if n in shortest_path[0] else "r" for n in G.nodes()]
 edge_colors = ["g" if is_sublist([u,v],shortest_path[0]) else "r" for u,v in G.edges()]
 #Get list of labels & positions 
 labels = nx.get_edge_attributes(G,'weight')
-pos=nx.get_node_attributes(G,'pos')
 
+
+fnames=os.listdir('data')
+G = load('data/%s'%fnames[0],True)
+Gi = load('data/%s'%fnames[0],True)
+labels = nx.get_edge_attributes(G,'weight')
+pos=nx.spring_layout(G)
 #Draw the digraph
 nx.draw(G,pos,with_labels=True,edge_color=edge_colors)
-nx.draw_networkx_nodes(G,pos,node_color=node_colors)
+# nx.draw_networkx_nodes(G,pos,node_color=node_colors)
 nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
 
 plt.show()
