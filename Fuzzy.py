@@ -45,18 +45,6 @@ def compute_ES():
         if ranking_function(t)>ranking_function(tasks['task'+str(j)]['ES']):
             tasks['task'+str(j)]['ES']=t
 
-def compute_LS1():
-    global fuzzy_table
-    global tasks
-    global G
-    ss=sorted(list(reversed(list(G.edges()))),reverse=True)
-    for i,j in ss:
-        t=sub_a(tasks['task'+str(j)]['LS'],G[i][j]['fuzzy'])
-        tij=ranking_function(t)
-        lsj=ranking_function(tasks['task'+str(j)]['LS'])
-        if tij<lsj:
-            tasks['task'+str(i)]['LS']=t
-
 def compute_LS():
     global fuzzy_table
     global tasks
@@ -71,7 +59,6 @@ def compute_LS():
             x=sub_a(tasks['task'+str(j)]['LS'],G[n][j]['fuzzy'])
             if ranking_function(x)>0: L.append(x)
         tasks[i]['LS']=min(L,key=lambda x: ranking_function(x))
-        tasks[i]['float']=sub_a(tasks[i]['LS'],tasks[i]['ES'])
 
 def compute_T():
     global fuzzy_table
@@ -80,22 +67,11 @@ def compute_T():
     T=dict()
     for i,j,f in reversed(fuzzy_table):
         t=sub_a(tasks['task'+str(j)]['LS'],G[i][j]['fuzzy'])
-        tasks['task'+str(i)]['float']= sub_a(t,tasks['task'+str(i)]['ES'])
         T[str(i)+'-'+str(j)]=sub_a(t,tasks['task'+str(i)]['ES'])
     return T
         
 
-def get_reversed_edge(cycle):
-    for edge in cycle:
-        u,v,_=edge
-        if u>v:
-            return u,v
-    return None,None
-
-line = list() #contains a single line
-singleElement = list()
 tasks = dict() #contains all the tasks
-number = -1
 fuzzy_table1=[
     ("1", "2", {'fuzzy':(10,15,15,20)}),
     ("1", "3", {'fuzzy':(30,40,40,50)}),
@@ -119,8 +95,6 @@ fuzzy_table=[
     ("5", "6", {'fuzzy':(1,1,1,2)}),
 ]
 
-gg=[(i,j,{'weight':ranking_function(k['fuzzy'])}) for i,j,k in fuzzy_table]
-
 # G=generate_random_dag(10,0.2)
 G=nx.DiGraph()
 G.add_edges_from(fuzzy_table)
@@ -129,26 +103,16 @@ s=sorted(G.nodes())
 # print(nx.dag_longest_path(G))
 # exit()
 for u in s: #slide the file line by line
-    number += 1
     tasks['task'+ str(u) ]= dict()
     tasks['task'+ str(u) ]['id'] = u
     tasks['task'+ str(u) ]['name'] = u
-    # tasks['task'+ str(u) ]['duration'] = f['fuzzy']
-    dependencies=get_dependencies(fuzzy_table,u)
-    if(len(dependencies)!=0):
-        tasks['task'+ str(u) ]['dependencies'] = dependencies
-    else:
-        tasks['task'+ str(u) ]['dependencies'] = ['-1']
     tasks['task'+ str(u) ]['ES'] = (0,0,0,0)
-    tasks['task'+ str(u) ]['EF'] = (0,0,0,0)
     tasks['task'+ str(u) ]['LS'] = (0,0,0,0)
-    tasks['task'+ str(u) ]['LF'] = (0,0,0,0)
-    tasks['task'+ str(u) ]['float'] = (0,0,0,0)
-    tasks['task'+ str(u) ]['isCritical'] = False
 
 
 compute_ES()
 
+#Assign LS=ES to Sink Node
 f=max(x[4:] for x in tasks.keys())
 tasks['task'+f]["LS"]=tasks['task'+f]['ES']
 
