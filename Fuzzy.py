@@ -139,19 +139,23 @@ tasks['task'+f]["LS"]=tasks['task'+f]['ES']
 
 compute_LS()
 
-print(compute_T())
-exit()
-print('task\t ES\t LS\t float\t isCritical')
-for task in tasks:
-    if(tasks[task]['float'] == (0,0,0,0)):
-        tasks[task]['isCritical'] = True
-    print(str(task) +'\t '+str(tasks[task]['ES']) +'\t '+str(tasks[task]['LS']) +'\t '+str(tasks[task]['float']) +'\t '+str(tasks[task]['isCritical']))
-    
+CPM=compute_T()
 
+ansE=list()
+ansN=set()
+for t,f in CPM.items():
+    t=t.split('-')
+    if(f == (0,0,0,0)):
+        ansE.append( (int(t[0]),int(t[1])) )
+        ansN.add(int(t[0]))
+        ansN.add(int(t[1]))
+print(CPM)
+print(ansE)
+print(ansN)
 #Draw the digraph
 pos=nx.spring_layout(G,weight=None)
-node_colors = ["g" if tasks["task%s"%n]['isCritical'] else "b" for n in G.nodes()]
-edge_colors = ["g" if tasks["task%s"%u]['isCritical'] and tasks["task%s"%v]['isCritical'] and tasks["task%s"%u]['ES']== sub_a(tasks["task%s"%v]['ES'],G[u][v]['fuzzy']) else "b" for u,v in G.edges()]
+node_colors = ["g" if n in ansN else "b" for n in G.nodes()]
+edge_colors = ["g" if (u,v) in ansE else "b" for u,v in G.edges()]
 nx.draw(G,with_labels=True,pos=pos,edge_color=edge_colors)
 nx.draw_networkx_nodes(G,node_color=node_colors,pos=pos)
 plt.show()
