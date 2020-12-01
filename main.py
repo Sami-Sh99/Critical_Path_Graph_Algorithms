@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import time
-from Dijkstra import dijkstra
-from FordFulkerson import ford_fulkerson
-from Bellmanford import bellman_ford
-from TopologicalSort import topological_sort
-from DijkstraFib import dijkstraFib
-from DAG_Generator import load
+from Algorithms.Dijkstra import dijkstra
+from Algorithms.FordFulkerson import ford_fulkerson
+from Algorithms.Bellmanford import bellman_ford
+from Algorithms.TopologicalSort import topological_sort
+from Algorithms.DijkstraFib import dijkstraFib
+from Generator.DAG_Generator import load
 import os
 
 def parse_file(x:str):

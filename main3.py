@@ -1,14 +1,14 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import time
-import Fuzzy
-from DAG_Generator import load
+import Algorithms.Fuzzy as Fuzzy
+from Generator.DAG_Generator import load
 import os
 
 def parse_file(x:str):
     return int(x[x.find('_')+1:x.find('.')])
 
-fnames=os.listdir('data')[0:5]
+fnames=os.listdir('data')
 
 F_V=dict()
 MF_V=dict()
@@ -17,9 +17,6 @@ for fname in fnames:
     print("loading %s"%fname)
     G = load('data/%s'%fname)
     for u,v in G.edges():
-        if u=='791':
-            _=0
-            pass
         w=Fuzzy.get_fuzzy_weight()
         G[u][v]['weight']=w
         G[u][v]['fuzzy']=w
