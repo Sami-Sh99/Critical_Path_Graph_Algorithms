@@ -19,7 +19,6 @@ B_V=dict()
 T_V=dict()
 MB_V=dict()
 
-#Dijsktra
 for fname in fnames:
     print("loading %s"%fname)
     G = load('data/%s'%fname)
@@ -46,9 +45,6 @@ for fname in fnames:
     print("D:",shortest_path_D)
     print("T:",shortest_path_T)
     print("B:",shortest_path_B)
-    # print("MB:",shortest_path_MB)
-
-    # input("press enter to continues")
 
 
 plt.title("Time to compute Longest-Path")
@@ -57,7 +53,6 @@ plt.ylabel("Time taken (seconds)")
 plt.plot(list(D_V.keys()),list(D_V.values()))
 plt.plot(list(B_V.keys()),list(B_V.values()))
 plt.plot(list(T_V.keys()),list(T_V.values()))
-# plt.plot(list(MB_V.keys()),list(MB_V.values()))
 plt.legend(["Modified Dijkstra","Bellman Ford","Topological Sort"])
 plt.show()
 
