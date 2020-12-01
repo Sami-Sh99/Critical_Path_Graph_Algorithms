@@ -19,12 +19,12 @@ def topological_sort(G, weight="weight", default_weight=1, topo_order=None):
         # Use the best predecessor if there is one and its distance is
         # non-negative, otherwise terminate.
         maxu = min(us, key=lambda x: x[0]) if us else (0, v)
-        dist[v] = maxu if maxu[0] >= -1000 else (0, v)
+        dist[v] = maxu if maxu[0] >= -1000 else (0, v)  #TODO Change -1000 to -inf
 
     u = None
     v = min(dist, key=lambda x: dist[x][0])
     path = []
-    while u != v:
+    while u != v:       #Backtrace
         path.append(v)
         u = v
         v = dist[v][1]

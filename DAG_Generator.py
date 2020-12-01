@@ -7,12 +7,12 @@ import json
 import random
 from random import randrange
 
-nb_of_generated_graphs=1
-min_nb_of_nodes=14
-nb_of_nodes=16
-edge_prob=0.3
+nb_of_generated_graphs=40
+min_nb_of_nodes=500
+nb_of_nodes=5000
+edge_prob=0.05
 max_weight=10
-min_weight=1
+min_weight=2
 
 def generate_random_dag(n, p):
 
