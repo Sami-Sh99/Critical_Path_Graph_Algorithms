@@ -45,7 +45,7 @@ def compute_ES():
         if ranking_function(t)>ranking_function(tasks['task'+str(j)]['ES']):
             tasks['task'+str(j)]['ES']=t
 
-def compute_LS():
+def compute_LS1():
     global fuzzy_table
     global tasks
     global G
@@ -57,6 +57,21 @@ def compute_LS():
         if tij<lsj:
             tasks['task'+str(i)]['LS']=t
 
+def compute_LS():
+    global fuzzy_table
+    global tasks
+    global G
+    for i in sorted(tasks.keys(),reverse=True):
+        n=i[4:]
+        L=list()
+        if ranking_function(tasks[i]['LS'])!=0:
+            L.append(tasks[i]['LS'])
+        J=G._succ[n]
+        for j in J:
+            x=sub_a(tasks['task'+str(j)]['LS'],G[n][j]['fuzzy'])
+            if ranking_function(x)>0: L.append(x)
+        tasks[i]['LS']=min(L,key=lambda x: ranking_function(x))
+        tasks[i]['float']=sub_a(tasks[i]['LS'],tasks[i]['ES'])
 
 def compute_T():
     global fuzzy_table
@@ -149,13 +164,11 @@ for t,f in CPM.items():
         ansE.append( (int(t[0]),int(t[1])) )
         ansN.add(int(t[0]))
         ansN.add(int(t[1]))
-print(CPM)
-print(ansE)
-print(ansN)
+
 #Draw the digraph
 pos=nx.spring_layout(G,weight=None)
-node_colors = ["g" if n in ansN else "b" for n in G.nodes()]
-edge_colors = ["g" if (u,v) in ansE else "b" for u,v in G.edges()]
+node_colors = ["g" if int(n) in ansN else "b" for n in G.nodes()]
+edge_colors = ["g" if (int(u),int(v)) in ansE else "b" for u,v in G.edges()]
 nx.draw(G,with_labels=True,pos=pos,edge_color=edge_colors)
 nx.draw_networkx_nodes(G,node_color=node_colors,pos=pos)
 plt.show()
