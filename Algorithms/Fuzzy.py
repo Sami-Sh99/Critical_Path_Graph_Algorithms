@@ -50,7 +50,7 @@ def compute_LS(G):
     global tasks
     ss=sorted(tasks.keys(),key=lambda x: int(x[4:]),reverse=True)
     for i in ss:
-        n=int(i[4:])
+        n=i[4:]
         L=list()
         if ranking_function(tasks[i]['LS'])!=0:
             L.append(tasks[i]['LS'])
@@ -116,7 +116,7 @@ def modified_Fuzzy(G):
     return path
 
 if __name__ == "__main__":
-    fuzzy_table1=[
+    fuzzy_table=[
         ("1", "2", {'fuzzy':(10,15,15,20)}),
         ("1", "3", {'fuzzy':(30,40,40,50)}),
         ("2", "3", {'fuzzy':(30,40,40,50)}),
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         ("4", "5", {'fuzzy':(60,100,150,180)})
     ]
 
-    fuzzy_table=[
+    fuzzy_table2=[
         ("1", "2", {'fuzzy':(2,2,3,4)}),
         ("1", "3", {'fuzzy':(2,3,3,6)}),
         ("1", "5", {'fuzzy':(2,3,4,5)}),
@@ -169,6 +169,8 @@ if __name__ == "__main__":
     pos=nx.spring_layout(G,weight=None)
     node_colors = ["g" if int(n) in ansN else "b" for n in G.nodes()]
     edge_colors = ["g" if (int(u),int(v)) in ansE else "b" for u,v in G.edges()]
+    labels = nx.get_edge_attributes(G,'fuzzy')
     nx.draw(G,with_labels=True,pos=pos,edge_color=edge_colors)
     nx.draw_networkx_nodes(G,node_color=node_colors,pos=pos)
+    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     plt.show()

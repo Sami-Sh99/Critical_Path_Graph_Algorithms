@@ -1,13 +1,13 @@
 import networkx as nx
 import os
-from DAG_Generator import load
+import matplotlib.pyplot as plt
+from Generator.DAG_Generator import load
 
-def topological_sort(G, weight="weight", default_weight=1, topo_order=None):
+def topological_sort(G, weight="weight", default_weight=1):
     if not G:
         return []
 
-    if topo_order is None:
-        topo_order = nx.topological_sort(G)
+    topo_order = nx.topological_sort(G)
 
     dist = {}  # stores {v : (length, u)}
     for v in topo_order:
@@ -19,7 +19,7 @@ def topological_sort(G, weight="weight", default_weight=1, topo_order=None):
         # Use the best predecessor if there is one and its distance is
         # non-negative, otherwise terminate.
         maxu = min(us, key=lambda x: x[0]) if us else (0, v)
-        dist[v] = maxu if maxu[0] >= -1000 else (0, v)  #TODO Change -1000 to -inf
+        dist[v] = maxu if maxu[0] >= float('-inf') else (0, v)
 
     u = None
     v = min(dist, key=lambda x: dist[x][0])
@@ -37,4 +37,4 @@ if __name__=='__main__':
     fnames=os.listdir('data')
     G = load('data/%s'%fnames[0],True)
     print("Applying Topo Algorithm")
-    print(topological_sort(G)[0])
+    print(topological_sort(G))

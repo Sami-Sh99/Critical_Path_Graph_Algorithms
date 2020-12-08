@@ -1,11 +1,6 @@
 
 def bfs(graph, source, sink):
-    """ Find shortest path between source and sink if path exists.
-    :param graph:
-    :param source:
-    :param sink:
-    :return:
-    """
+    """ Find shortest path between source and sink if path exists."""
     queue, visited = [(source, [source])], [source]
     while queue:
         u, path = queue.pop(0)
@@ -22,14 +17,7 @@ def bfs(graph, source, sink):
                 queue.append((v, path + [v]))
 
 def augment_flow(graph, flow_path):
-    """ Augment flow of the graph
-    :param graph:
-    :param flow_path: (list) eg [('source', 'CA'), ('CA', 'AZ'), ('AZ', 'sink')]
-    :return:
-        1. get the bottleneck capacity
-        2. update the residual capacities of forward and back edges
-        3. return graph with flow augmented.
-    """
+    """ Augment flow of the graph"""
     bottleneck = min([graph[u][v]['weight'] for u, v in flow_path])
     for u, v in flow_path:
         updated_capacity = graph[u][v]['weight'] - bottleneck
@@ -44,12 +32,7 @@ def augment_flow(graph, flow_path):
     return graph
 
 def reduce_graph(graph):
-    """ Transform a bipartite graph into a directed flow network with source and sink.
-    :param graph: (networkx.classes.digraph.DiGraph)
-    :return:
-        bipartite G -> network flow
-        R(G) -> G'
-    """
+    """ Transform a bipartite graph into a directed flow network with source and sink."""
     G = graph.copy()
     all_nodes = G.nodes()
     G.add_node('source')
@@ -64,14 +47,7 @@ def reduce_graph(graph):
 
 
 def ford_fulkerson(graph, source, sink):
-    """ Run the Ford Fulkerson method using BFS for shortest path
-    :param graph:
-    :param source:
-    :param sink:
-    :return:
-        Once BFS can no longer find any shortest direct path between source and sink,
-        return the residual graph with the updated capacities.
-    """
+    """ Run the Ford Fulkerson method using BFS for shortest path"""
     path = bfs(graph, source, sink)
     while path:
         flow_path = list(zip(path[:-1], path[1:]))
