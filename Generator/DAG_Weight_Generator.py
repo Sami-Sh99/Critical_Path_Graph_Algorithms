@@ -1,12 +1,14 @@
+#!/usr/bin/env python
+
 import networkx as nx
+# import matplotlib.pyplot as plt
 from networkx.readwrite import json_graph
 import json
 import random
 from random import randrange
 
 nb_of_generated_graphs=40
-min_nb_of_nodes=500
-nb_of_nodes=5000
+nb_of_nodes=1000
 edge_prob=0.05
 max_weight=10
 min_weight=2
@@ -34,7 +36,6 @@ def generate_random_dag(n, p):
             x,y=get_reversed_edge(c)
             if x is not None : 
                 random_dag.remove_edge(x,y)
-
         except nx.NetworkXNoCycle:
             if nx.is_weakly_connected(random_dag):
                 break
@@ -43,6 +44,7 @@ def generate_random_dag(n, p):
 
 def save(G, fname):
     data=json_graph.node_link_data(G)
+
     with open(fname, 'w') as json_file:
         json.dump(data, json_file)
 
@@ -66,6 +68,12 @@ def get_reversed_edge(cycle):
     return None,None
 
 if __name__ == '__main__':
-    for n in random.sample(range(min_nb_of_nodes,nb_of_nodes), nb_of_generated_graphs):
-        G=generate_random_dag(n, edge_prob)
-        save(G,"data/DAG_%d.json" % n)
+    for n in range(1,20):
+        G=generate_random_dag(nb_of_nodes, n/100.0)
+        save(G,"dataE/DAG_%d.json" % len(G.edges))
+    # G=load("sout.json")
+    
+    
+    #Draw the digraph
+    # nx.draw(G,with_labels=True)
+    # plt.show()

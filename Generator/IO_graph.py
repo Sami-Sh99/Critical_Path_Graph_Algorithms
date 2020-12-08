@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-from Dijkstra import dijkstra,backPropagate
-from DAG_Generator import load
+from Algorithms.Dijkstra import dijkstra,backPropagate
+from Generator.DAG_Generator import load
 import os
 
 def is_sublist(x,y):
@@ -35,32 +35,28 @@ G.add_edges_from([("4", "6", {'weight':1})])
 G.add_edges_from([("5", "6", {'weight':12})])
 
 
-# print the adjacency list
-# for line in nx.generate_adjlist(G):
-#     print(line)
-
 #Apply Dijkstra to obtain shortest path from a to d
-shortest_path=dijkstra(G,'1','3')
+shortest_path=dijkstra(G,'1','6')
 backward_shortest_path=backPropagate(G,shortest_path[0][-1],shortest_path[0][0],shortest_path[1][shortest_path[0][-1]])
 #print distance table:
 print(shortest_path)
 print(backward_shortest_path)
 
 #Color the critical nodes in blue
-node_colors = ["g" if n in shortest_path[0] else "r" for n in G.nodes()]
+node_colors = ["g" if n in shortest_path[0] else "r" for n in list(G.nodes())]
 edge_colors = ["g" if is_sublist([u,v],shortest_path[0]) else "r" for u,v in G.edges()]
 #Get list of labels & positions 
 labels = nx.get_edge_attributes(G,'weight')
-
+print(node_colors)
 
 fnames=os.listdir('data')
-G = load('data/%s'%fnames[0],True)
-Gi = load('data/%s'%fnames[0],True)
+# G = load('data/%s'%fnames[0],True)
+# Gi = load('data/%s'%fnames[0],True)
 labels = nx.get_edge_attributes(G,'weight')
 pos=nx.spring_layout(G)
 #Draw the digraph
 nx.draw(G,pos,with_labels=True,edge_color=edge_colors)
-# nx.draw_networkx_nodes(G,pos,node_color=node_colors)
+nx.draw_networkx_nodes(G,pos,node_color=node_colors)
 nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
 
 plt.show()

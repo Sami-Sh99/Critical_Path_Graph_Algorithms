@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-from Bellmanford import bellman_ford
+from Algorithms.Bellmanford import bellman_ford
 
 
 def is_sublist(x,y):
